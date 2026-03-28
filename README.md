@@ -34,20 +34,6 @@ The system converts complex health data into simple, easy-to-understand insights
 
 ---
 
-## Project Structure
 
 
-BloodIQ/
-│
-├── app.py
-├── requirements.txt
-│
-├── templates/
-│   ├── base.html
-│   ├── index.html
-│   ├── diabetes.html
-│   ├── cbc.html
-│   └── blood_pressure.html
-│
-├── static/
-│   └── image.jpg
+
