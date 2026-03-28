@@ -91,6 +91,17 @@ http://127.0.0.1:5000/
 - Clear risk classification (Low / Moderate / High)  
 - List of detected issues (for CBC)  
 - Estimated blood pressure values  
-- Basic health guidance  
+- Basic health guidance
+
+
+  ## Screenshots
+
+![Home](Screenshot%202026-03-28%20194958.png)
+
+![Diabetes](Screenshot%202026-03-28%20195012.png)
+
+![CBC](Screenshot%202026-03-28%20195042.png)
+
+![BP](Screenshot%202026-03-28%20195116.png)
 
 
