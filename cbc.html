@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CBC Health Analyzer</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #ffd633, #b38600);
+    color: #ffffff;
+  }
+
+  .wrapper {
+    max-width: 720px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .title {
+    margin: 0;
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    opacity: 0.85;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.12);
+    padding: 28px;
+    border-radius: 14px;
+    backdrop-filter: blur(6px);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .field input {
+    width: 100%;
+    padding: 11px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 13px;
+    margin-top: 28px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    background: #ffffff;
+    color: #b38600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .btn:hover {
+    background: #fff2cc;
+  }
+
+  .result {
+    margin-top: 25px;
+    padding: 20px;
+    background: rgba(0,0,0,0.25);
+    border-radius: 12px;
+    display: none;
+  }
+
+  .result.show {
+    display: block;
+  }
+
+  .status {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  .summary {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .issues {
+    margin-top: 10px;
+  }
+
+  .issue {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+  }
+
+  .note {
+    text-align: center;
+    margin-top: 18px;
+    font-size: 12px;
+    opacity: 0.75;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <div class="header">
+    <h1 class="title">🧬 CBC Health Analyzer</h1>
+    <p class="subtitle">Enter your blood report values to check possible health concerns</p>
+  </div>
+
+  <div class="card">
+
+    <div class="grid">
+
+      <div class="field">
+        <label>RBC (Red Blood Cells)</label>
+        <input type="number" id="rbc" placeholder="4.5 – 5.5">
+      </div>
+
+      <div class="field">
+        <label>WBC (White Blood Cells)</label>
+        <input type="number" id="wbc" placeholder="4000 – 11000">
+      </div>
+
+      <div class="field">
+        <label>Hemoglobin</label>
+        <input type="number" id="hgb" placeholder="12 – 17">
+      </div>
+
+      <div class="field">
+        <label>Hematocrit</label>
+        <input type="number" id="hct" placeholder="38 – 52">
+      </div>
+
+      <div class="field">
+        <label>Platelets</label>
+        <input type="number" id="plt" placeholder="150 – 400">
+      </div>
+
+      <div class="field">
+        <label>MCV</label>
+        <input type="number" id="mcv" placeholder="80 – 100">
+      </div>
+
+    </div>
+
+    <button class="btn" onclick="analyzeCBC()">Analyse Report</button>
+
+    <div class="result" id="resultBox">
+      <p class="status" id="statusText"></p>
+      <p class="summary" id="summaryText"></p>
+      <div class="issues" id="issuesList"></div>
+      <p id="adviceText"></p>
+    </div>
+
+  </div>
+
+  <p class="note">⚕ This tool provides estimates only. Always consult a medical professional.</p>
+
+</div>
+
+<script>
+async function analyzeCBC() {
+
+  const dataInput = {
+    rbc: Number(document.getElementById('rbc').value),
+    wbc: Number(document.getElementById('wbc').value),
+    hgb: Number(document.getElementById('hgb').value),
+    hct: Number(document.getElementById('hct').value),
+    plt: Number(document.getElementById('plt').value),
+    mcv: Number(document.getElementById('mcv').value)
+  };
+
+  const button = document.querySelector('.btn');
+  button.textContent = 'Analysing...';
+  button.disabled = true;
+
+  try {
+    const response = await fetch('/predict/cbc', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dataInput)
+    });
+
+    const result = await response.json();
+
+    document.getElementById('statusText').textContent = result.status;
+
+    document.getElementById('summaryText').textContent =
+      result.issues.length
+        ? `${result.issues.length} issue(s) detected`
+        : 'All values are within normal range';
+
+    document.getElementById('issuesList').innerHTML =
+      result.issues.map(issue =>
+        `<div class="issue"><span class="dot"></span>${issue}</div>`
+      ).join('');
+
+    document.getElementById('adviceText').textContent = result.message;
+
+    document.getElementById('resultBox').classList.add('show');
+
+  } catch (error) {
+    alert("Unable to connect to server");
+  }
+
+  button.textContent = 'Analyse Report';
+  button.disabled = false;
+}
+</script>
+
+</body>
+</html>
