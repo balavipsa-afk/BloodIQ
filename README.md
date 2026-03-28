@@ -40,11 +40,14 @@ The system converts complex health data into simple, easy-to-understand insights
 BloodIQ/
 │
 ├── app.py
+├── requirements.txt
+│
 ├── templates/
-│ ├── index.html
-│ ├── diabetes.html
-│ ├── cbc.html
-│ └── blood_pressure.html
+│   ├── base.html
+│   ├── index.html
+│   ├── diabetes.html
+│   ├── cbc.html
+│   └── blood_pressure.html
 │
 ├── static/
-├── requirements.txt
+│   └── image.jpg
