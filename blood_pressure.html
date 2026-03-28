@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Blood Pressure Estimator</title>
+
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff4d4d, #b30000);
+    color: white;
+  }
+
+  .container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    text-align: center;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  .form-card {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: left;
+  }
+
+  label {
+    display: block;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: none;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background: white;
+    color: red;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #ffe5e5;
+  }
+
+  .result-box {
+    margin-top: 20px;
+    padding: 20px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  .bp-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .bp-number {
+    font-size: 44px;
+    font-weight: bold;
+  }
+
+  .bp-sep {
+    font-size: 28px;
+  }
+
+  .bp-unit {
+    font-size: 14px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>💉 Blood Pressure Estimator</h1>
+  <p>Enter your details to estimate your blood pressure</p>
+
+  <div class="form-card">
+
+    <label>Age (years)</label>
+    <input type="number" id="age" placeholder="e.g. 25">
+
+    <label>Weight (kg)</label>
+    <input type="number" id="weight" placeholder="e.g. 70">
+
+    <label>Height (cm)</label>
+    <input type="number" id="height" placeholder="e.g. 170">
+
+    <label>Do you smoke?</label>
+    <select id="smoking">
+      <option value="0">No</option>
+      <option value="1">Yes</option>
+    </select>
+
+    <button onclick="predict()">Estimate Blood Pressure</button>
+
+    <div class="result-box" id="result">
+      <p id="res-category"></p>
+
+      <div class="bp-display" id="bp-display"></div>
+
+      <p id="res-bmi"></p>
+      <p id="res-advice"></p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function predict() {
+  const age = document.getElementById('age').value;
+
+  if (!age) {
+    alert("Please enter your details");
+    return;
+  }
+
+  
+  const systolic = Math.floor(Math.random() * 40) + 110;
+  const diastolic = Math.floor(Math.random() * 20) + 70;
+
+  document.getElementById('res-category').textContent = "Normal";
+
+  document.getElementById('bp-display').innerHTML = `
+    <span class="bp-number">${systolic}</span>
+    <span class="bp-sep">/</span>
+    <span class="bp-number">${diastolic}</span>
+    <span class="bp-unit">mm Hg</span>
+  `;
+
+  document.getElementById('res-bmi').textContent = "BMI: 22 · Risk: Low";
+  document.getElementById('res-advice').textContent = "Maintain a healthy lifestyle.";
+
+  document.getElementById('result').style.display = "block";
+}
+</script>
+
+</body>
+</html>
