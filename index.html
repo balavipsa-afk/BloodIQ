@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>BloodIQ — Smart Blood Health Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --red: #C0152A; --red-deep: #4A0008; --white: #FFFFFF; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--red-deep); min-height: 100vh; overflow-x: hidden; }
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 60px 20px 80px; text-align: center; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('/static/images/blood_bg.jpg');
+      background-size: cover; background-position: center;
+      filter: brightness(0.28) saturate(1.4); z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center top, rgba(120,0,10,0.55) 0%, rgba(30,0,5,0.85) 100%);
+      z-index: 1;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 1100px; width: 100%; }
+    .pulse-ring {
+      position: absolute; width: 600px; height: 600px; border-radius: 50%;
+      border: 1px solid rgba(192,21,42,0.18); top: 50%; left: 50%;
+      transform: translate(-50%,-50%); animation: pulse-expand 3s ease-out infinite; z-index: 1;
+    }
+    .pulse-ring:nth-child(2) { animation-delay: 1s; }
+    .pulse-ring:nth-child(3) { animation-delay: 2s; }
+    @keyframes pulse-expand {
+      0%   { transform: translate(-50%,-50%) scale(0.6); opacity: 0.6; }
+      100% { transform: translate(-50%,-50%) scale(1.4); opacity: 0; }
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(192,21,42,0.25); border: 1px solid rgba(192,21,42,0.5);
+      color: #FF8A95; font-size: 12px; font-weight: 500; letter-spacing: 2px;
+      text-transform: uppercase; padding: 6px 18px; border-radius: 50px;
+      margin-bottom: 28px; animation: fadeUp 0.6s ease both;
+    }
+    .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #FF4455; animation: blink 1.2s ease infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+    h1 {
+      font-family: 'Playfair Display', serif; font-size: clamp(52px, 8vw, 88px);
+      font-weight: 900; color: var(--white); line-height: 1.0; letter-spacing: -2px;
+      margin-bottom: 12px; animation: fadeUp 0.6s 0.1s ease both;
+    }
+    h1 span { color: var(--red); }
+    .tagline {
+      font-size: 17px; font-weight: 300; color: rgba(255,255,255,0.65);
+      line-height: 1.7; max-width: 520px; margin: 0 auto 50px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .section-label { font-size: 11px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 24px; }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; animation: fadeUp 0.6s 0.3s ease both; }
+    .card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 20px; padding: 32px 26px 28px; cursor: pointer; text-decoration: none;
+      display: flex; flex-direction: column; align-items: flex-start;
+      position: relative; overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+    .card::before {
+      content: ''; position: absolute; inset: 0; border-radius: 20px;
+      background: linear-gradient(135deg, rgba(192,21,42,0.15) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.25s ease;
+    }
+    .card:hover { transform: translateY(-6px); border-color: rgba(192,21,42,0.6); background: rgba(192,21,42,0.12); }
+    .card:hover::before { opacity: 1; }
+    .card-emoji { font-size: 40px; margin-bottom: 20px; display: block; }
+    .card-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 10px; }
+    .card-desc { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.55); line-height: 1.65; flex: 1; margin-bottom: 22px; }
+    .card-arrow { font-size: 12px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: #FF8A95; transition: letter-spacing 0.2s; }
+    .card:hover .card-arrow { letter-spacing: 2px; }
+    .card-tag {
+      position: absolute; top: 18px; right: 18px; font-size: 10px; font-weight: 500;
+      letter-spacing: 1px; text-transform: uppercase;
+      background: rgba(192,21,42,0.3); color: #FF8A95;
+      border: 1px solid rgba(192,21,42,0.4); padding: 3px 10px; border-radius: 50px;
+    }
+    .footer { position: relative; z-index: 2; margin-top: 60px; font-size: 12px; color: rgba(255,255,255,0.2); animation: fadeUp 0.6s 0.5s ease both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+    <div class="pulse-ring"></div>
+    <div class="hero-content">
+      <div class="badge"><span class="badge-dot"></span> AI-Powered Health Analysis</div>
+      <h1>Blood<span>IQ</span></h1>
+      <p class="tagline">Three intelligent health tools powered by machine learning. Get instant insights about your blood health — no lab coat required.</p>
+      <p class="section-label">Choose a service to begin</p>
+      <div class="cards-grid">
+        <a href="/diabetes" class="card">
+          <span class="card-tag">ML Model</span>
+          <span class="card-emoji">🩸</span>
+          <p class="card-title">Diabetes Risk Checker</p>
+          <p class="card-desc">Enter glucose levels, BMI, age and lifestyle factors to predict your diabetes risk score instantly.</p>
+          <span class="card-arrow">Start check →</span>
+        </a>
+        <a href="/cbc" class="card">
+          <span class="card-tag">Report AI</span>
+          <span class="card-emoji">🧬</span>
+          <p class="card-title">CBC Disease Detector</p>
+          <p class="card-desc">Input your Complete Blood Count values to detect signs of anemia, leukemia, or other blood disorders.</p>
+          <span class="card-arrow">Analyse CBC →</span>
+        </a>
+        <a href="/blood-pressure" class="card">
+          <span class="card-tag">Predictor</span>
+          <span class="card-emoji">💉</span>
+          <p class="card-title">Blood Pressure Estimator</p>
+          <p class="card-desc">Assess your hypertension risk based on lifestyle — sleep, stress, diet, exercise, and more.</p>
+          <span class="card-arrow">Check BP risk →</span>
+        </a>
+      </div>
+      <p class="footer">⚕ For educational purposes only — not a substitute for medical advice</p>
+    </div>
+  </section>
+</body>
+</html>
