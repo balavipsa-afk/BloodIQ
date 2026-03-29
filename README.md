@@ -30,7 +30,8 @@ The system converts complex health data into simple, easy-to-understand insights
 
 - Backend: Python, Flask  
 - Frontend: HTML, CSS, JavaScript  
-- Data Exchange: JSON  
+- Data Exchange: JSON
+- Logic Processing: Prolog (SWI-Prolog) – used for rule-based medical inference  
 
 ---
 
